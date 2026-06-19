@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TP1Gnasso.Data\TP1Gnasso.Data.csproj" />
+    <ProjectReference Include="..\TP1Gnasso.Entities\TP1Gnasso.Entities.csproj" />
+  </ItemGroup>
+
+</Project>
