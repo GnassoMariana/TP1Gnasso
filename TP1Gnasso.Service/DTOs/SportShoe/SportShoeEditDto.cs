@@ -14,9 +14,14 @@ namespace TP1Gnasso.Service.DTOs.SportShoe
         public decimal Price { get; set; }
         public DateTime ReleaseDate { get; set; }
         public bool Active { get; set; }
-
+        public string? Brand { get; set; }
         public int BrandId { get; set; }
+
+        public int Size { get; set; }
         public int SizeId { get; set; }
+        public string?  Sport { get; set; }
         public int SportId { get; set; }
+
+        public int GenreId { get; set; }
     }
 }

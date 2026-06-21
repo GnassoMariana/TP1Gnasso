@@ -30,7 +30,18 @@ namespace TP1Gnasso.WForms
 
         private void addButton_Click(object sender, EventArgs e)
         {
-
+            using(var scope= _serviceProvider.CreateScope())
+            {
+                using(SportShoesAE frm = scope.ServiceProvider.GetRequiredService<SportShoesAE>())
+                {
+                    frm.Text = "New Sport Shoe";
+                    frm.ShowDialog();
+                    if(frm.DataChanged)
+                    {
+                        LoadGrid();
+                    }
+                }
+            }
         }
 
         private void updateButton_Click(object sender, EventArgs e)
@@ -48,29 +59,36 @@ namespace TP1Gnasso.WForms
             var selectedRow = dataGridView1.SelectedRows[0];
             if (selectedRow.Tag is null) return;
             SportShoeListDto sportShoelistDto =(SportShoeListDto)selectedRow.Tag;
-
-            var dr = MessageBox.Show($"Are you sure you want to delete {sportShoelistDto.Model} ?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (dr == DialogResult.No) return;
-
             using(var scope= _serviceProvider.CreateScope())
             {
                 var sportShoeService = scope.ServiceProvider.GetRequiredService<ISportShoeService>();
                 var resultQuery = sportShoeService.GetToDelete(sportShoelistDto.SportShoeId);
-                if(resultQuery.IsFailure)
+                if (resultQuery.IsFailure)
                 {
                     string errors = string.Join("\n", resultQuery.Errors);
-                    MessageBox.Show(errors, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //MessageBox.Show(errors, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
 
                 }
                 var sportShoeDeleteDto = resultQuery.Value;
+                var dr = MessageBox.Show($"Are you sure you want to delete {sportShoelistDto.Model} ?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dr == DialogResult.No) return;
+
                 try
                 {
                     var deleteResult = sportShoeService.Delete(sportShoeDeleteDto!);
-                    if(deleteResult.IsFailure)
+                    if (deleteResult.IsConcurrencyConflict)
                     {
-                        string errors = string.Join("\n", resultQuery.Errors);
-                        MessageBox.Show(errors, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        //string errors = string.Join("\n", resultQuery.Errors);
+                        //MessageBox.Show(errors, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        ErrorHelper.ShowErrors(deleteResult.Errors);
+                        LoadGrid();
+                        return;
+
+                    }
+                    if (deleteResult.IsFailure)
+                    {
+                        ErrorHelper.ShowErrors(deleteResult.Errors);
                         return;
 
                     }
@@ -82,8 +100,12 @@ namespace TP1Gnasso.WForms
 
                     MessageBox.Show(ex.Message);
                 }
+
             }
+
+
         }
+        
         
 
         private void filterButton_Click(object sender, EventArgs e)
