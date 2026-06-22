@@ -1,0 +1,51 @@
+﻿Argentina
+Australia
+Austria
+Belgium
+Bolivia
+Brazil
+Bulgaria
+Canada
+Chile
+China
+Colombia
+Costa Rica
+Croatia
+Czech Republic
+Denmark
+Ecuador
+Egypt
+Finland
+France
+Germany
+Greece
+Hungary
+India
+Indonesia
+Ireland
+Israel
+Italy
+Japan
+Mexico
+Netherlands
+New Zealand
+Norway
+Paraguay
+Peru
+Poland
+Portugal
+Romania
+Russia
+South Africa
+South Korea
+Spain
+Sweden
+Switzerland
+Thailand
+Turkey
+Ukraine
+United Kingdom
+USA
+Uruguay
+Venezuela
+Vietnam

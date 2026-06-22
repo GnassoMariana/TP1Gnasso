@@ -17,5 +17,7 @@ namespace TP1Gnasso.Service.Interfaces
         Result Update(BrandEditDto brandDto);
         Result Delete(int id);
 
+        Result<BrandListDto> GetBrandByName(string name);
+
     }
 }

@@ -20,7 +20,8 @@ namespace TP1Gnasso.Service.Mappers
                 Active = sportShoedto.Active,
                 BrandId = sportShoedto.BrandId,
                 SizeId = sportShoedto.SizeId,
-                SportId = sportShoedto.SportId
+                SportId = sportShoedto.SportId,
+                GenreId = sportShoedto.GenreId
             };
 
         }

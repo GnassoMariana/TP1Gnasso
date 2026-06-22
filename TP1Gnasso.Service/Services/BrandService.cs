@@ -80,6 +80,21 @@ namespace TP1Gnasso.Service.Services
             return Result<List<BrandListDto>>.Success(brands);
         }
 
+        public Result<BrandListDto> GetBrandByName(string name)
+        {
+            var brand = _uow.Brands
+                  .GetAll()
+                  .FirstOrDefault(b => b.Name == name);
+
+            if (brand == null)
+            {
+                return Result<BrandListDto>.Failure("Brand not found!");
+            }
+
+            return Result<BrandListDto>
+                .Success(BrandMapper.ToBrandListDto(brand));
+        }
+
         public Result<BrandListDto> GetById(int id)
         {
             var brand = _uow.Brands.GetById(id);

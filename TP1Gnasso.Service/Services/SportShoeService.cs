@@ -27,29 +27,71 @@ namespace TP1Gnasso.Service.Services
 
         public Result Add(SportShoeCreateDto sportShoeDto)
         {
-            var sportShoe = SportShoeMapper.ToEntity(sportShoeDto);
-            var result = _validator.Validate(sportShoe);
-
-            if (!result.IsValid)
-            {
-                return Result.Failure(result.Errors.Select(e => e.ErrorMessage).ToList());
-            }
-            if(_unitOfWork.SportShoes.Exist(sportShoe.Model!, sportShoe.SizeId, sportShoe.SportShoeId))
-            {
-                return Result.Failure($"A sport shoe with the model '{sportShoe.Model}' and the size {sportShoe.Size} already exists.");
-            }
             try
             {
+                var brand = _unitOfWork.Brands
+                    .GetAll()
+                    .FirstOrDefault(b => b.Name == sportShoeDto.Brand);
+
+                if (brand is null)
+                {
+                    brand = new Brand
+                    {
+                        Name = sportShoeDto.Brand,
+                        Active = true
+                    };
+
+                    _unitOfWork.Brands.Add(brand);
+                    _unitOfWork.Save();
+                }
+
+                var sport = _unitOfWork.Sports
+                    .GetAll()
+                    .FirstOrDefault(s => s.Name == sportShoeDto.Sport);
+
+                if (sport is null)
+                {
+                    sport = new Sport
+                    {
+                        Name = sportShoeDto.Sport,
+                        Active = true
+                    };
+
+                    _unitOfWork.Sports.Add(sport);
+                    _unitOfWork.Save();
+                }
+
+                sportShoeDto.BrandId = brand.BrandId;
+                sportShoeDto.SportId = sport.SportId;
+
+                var sportShoe = SportShoeMapper.ToEntity(sportShoeDto);
+
+                var result = _validator.Validate(sportShoe);
+
+                if (!result.IsValid)
+                {
+                    return Result.Failure(
+                        result.Errors.Select(e => e.ErrorMessage).ToList());
+                }
+
+                if (_unitOfWork.SportShoes.Exist(
+                    sportShoe.Model!,
+                    sportShoe.SizeId,
+                    sportShoe.SportShoeId))
+                {
+                    return Result.Failure(
+                        $"A sport shoe with the model '{sportShoe.Model}' and the size {sportShoe.Size} already exists.");
+                }
+
                 _unitOfWork.SportShoes.Add(sportShoe);
                 _unitOfWork.Save();
+
                 return Result.Success();
             }
             catch (Exception ex)
             {
-
                 return Result.Failure(ex.Message);
             }
-
         }
 
         //public Result Delete(int id)
@@ -165,26 +207,26 @@ namespace TP1Gnasso.Service.Services
             {
                 return Result.Failure(result.Errors.Select(s => s.ErrorMessage).ToList());
             }
-            SportShoe sportShoe = _unitOfWork.SportShoes.GetById(sportShoeDto.SportShoeId);
-            if(sportShoe == null)
-            {
-                return Result.Failure("Sport shoe not found");
-            }
-
-            sportShoe.Model = sportShoeDto.Model;
-            sportShoe.Price = sportShoeDto.Price;
-            sportShoe.ReleaseDate = sportShoeDto.ReleaseDate;
-            sportShoe.Active = sportShoeDto.Active;
-            sportShoe.BrandId = sportShoeDto.BrandId;
-            sportShoe.SizeId = sportShoeDto.SizeId; ;
-            sportShoe.SportId = sportShoeDto.SportId;
-
-            if(_unitOfWork.SportShoes.Exist(sportShoe.Model!, sportShoe.SizeId, sportShoe.SportShoeId))
-            {
-                return Result.Failure($"A sport shoe with the model '{sportShoe.Model}' and the size {sportShoe.SizeId} already exists.");
-            }
             try
             {
+                SportShoe sportShoe = _unitOfWork.SportShoes.GetById(sportShoeDto.SportShoeId);
+                if (sportShoe == null)
+                {
+                    return Result.Failure("Sport shoe not found");
+                }
+                if (_unitOfWork.SportShoes.Exist(sportShoeDto.Model!, sportShoeDto.SizeId, sportShoeDto.SportShoeId))
+                {
+                    return Result.Failure($"A sport shoe with the model '{sportShoeDto.Model}' and the size {sportShoeDto.SizeId} already exists.");
+                }
+
+                sportShoe.Model = sportShoeDto.Model;
+                sportShoe.Price = sportShoeDto.Price;
+                sportShoe.ReleaseDate = sportShoeDto.ReleaseDate;
+                sportShoe.Active = sportShoeDto.Active;
+                sportShoe.BrandId = sportShoeDto.BrandId;
+                sportShoe.SizeId = sportShoeDto.SizeId; ;
+                sportShoe.SportId = sportShoeDto.SportId;
+
                 _unitOfWork.Save();
                 return Result.Success();
             }
@@ -193,6 +235,9 @@ namespace TP1Gnasso.Service.Services
 
                 return Result.Failure(ex.Message);
             }
+            
+           
+
         }
     }
 }

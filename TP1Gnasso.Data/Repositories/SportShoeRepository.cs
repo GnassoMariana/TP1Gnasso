@@ -84,9 +84,8 @@ namespace TP1Gnasso.Data.Repositories
             return _context.SportShoes
                 .Include(s => s.Brand)
                 .Include(s => s.Size)
-                .Include(s => s.Sport)
+                .Include(s => s.Sport) .Include(s => s.Genre)
                 .Include(s => s.Genre)
-                .AsNoTracking()
                 .FirstOrDefault(s => s.SportShoeId == id)!;
         }
 

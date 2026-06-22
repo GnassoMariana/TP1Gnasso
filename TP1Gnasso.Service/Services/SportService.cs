@@ -104,6 +104,21 @@ namespace TP1Gnasso.Service.Services
             return Result<SportEditDto>.Success(SportMapper.ToSportEditDto(sport));
         }
 
+        public Result<SportListDto> GetSportByName(string name)
+        {
+            var sport = _unitOfWork.Sports
+                       .GetAll()
+                       .FirstOrDefault(s => s.Name == name);
+
+            if (sport == null)
+            {
+                return Result<SportListDto>.Failure("Sport not found");
+            }
+
+            return Result<SportListDto>
+                .Success(SportMapper.ToSportListDto(sport));
+        }
+
         public Result Update(SportEditDto sportDto)
         {
             var sportToValidate = SportMapper.ToEntity(sportDto);

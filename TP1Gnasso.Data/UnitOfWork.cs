@@ -12,13 +12,14 @@ namespace TP1Gnasso.Data
     {
         private readonly SportShoesDbContext _context;
         public UnitOfWork(SportShoesDbContext context, ISportRepository sports,
-            ISportShoeRepository sportShoe, IBrandRepository brands, ISizeRepository sizes)
+            ISportShoeRepository sportShoe, IBrandRepository brands, ISizeRepository sizes, IGenreRepository genres)
         {
             _context = context;
             Sports = sports;
             SportShoes = sportShoe;
             Sizes = sizes;
             Brands = brands;
+            Genres = genres;
         }
         public ISportShoeRepository SportShoes { get; }
 
@@ -27,6 +28,8 @@ namespace TP1Gnasso.Data
         public ISizeRepository Sizes { get; }
 
         public IBrandRepository Brands { get; }
+
+        public IGenreRepository Genres { get; }
 
         public void Dispose()
         {

@@ -11,11 +11,21 @@ namespace TP1Gnasso.WForms
         private SportShoeEditDto _sportShoeUpdateDto;
         private readonly ISportShoeService _sportShoeService;
         private bool _isUpdate = false;
+        private readonly ISizeService _sizeService;
+        private readonly IGenreService _genreService;
+        private readonly IBrandService _brandService;
+        private readonly ISportService _sportService;
 
-        public SportShoesAE(ISportShoeService sportShoeService)
+
+        public SportShoesAE(ISportShoeService sportShoeService, ISizeService sizeService,
+            IGenreService genreService, IBrandService brandService, ISportService sportService)
         {
             InitializeComponent();
             _sportShoeService = sportShoeService;
+            _sizeService = sizeService;
+            _genreService = genreService;
+            _brandService = brandService;
+            _sportService = sportService;
         }
 
         public bool DataChanged { get; private set; }
@@ -24,6 +34,8 @@ namespace TP1Gnasso.WForms
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            LoadComboBox();
             if (_sportShoeUpdateDto is null)
             {
                 activeCheckbox.Checked = true;
@@ -34,9 +46,9 @@ namespace TP1Gnasso.WForms
             {
                 modelTextBox.Text = _sportShoeUpdateDto.Model;
                 brandTextBox.Text = _sportShoeUpdateDto.Brand;
-                genreComboBox.SelectedItem = _sportShoeUpdateDto.GenreId;
+                genreComboBox.SelectedValue = _sportShoeUpdateDto.GenreId;
                 sportTextBox.Text = _sportShoeUpdateDto.Sport;
-                sizeComboBox.SelectedItem = _sportShoeUpdateDto.SizeId;
+                sizeComboBox.SelectedValue = _sportShoeUpdateDto.SizeId;
                 priceTextBox.Text = _sportShoeUpdateDto.Price.ToString();
                 dateTimePicker1.Value = _sportShoeUpdateDto.ReleaseDate;
                 activeCheckbox.Enabled = true;
@@ -45,7 +57,24 @@ namespace TP1Gnasso.WForms
             }
         }
 
+        private void LoadComboBox()
+        {
 
+            var sizeResult = _sizeService.GetAll();
+            var genreResult = _genreService.GetAll();
+            if (sizeResult.IsFailure)
+            {
+                ErrorHelper.ShowErrors(sizeResult.Errors);
+                return;
+            }
+            if (genreResult.IsFailure)
+            {
+                ErrorHelper.ShowErrors(genreResult.Errors);
+                return;
+            }
+            GridHelper.LoadComboBoxGenre(genreComboBox,genreResult.Value!);
+            GridHelper.LoadComboBoxSizes(sizeComboBox, sizeResult.Value!);
+        }
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -65,6 +94,10 @@ namespace TP1Gnasso.WForms
                 {
                     if (!_isUpdate)
                     {
+
+                        if (!VerifyBrand()) return;
+                        if (!VerifySport()) return;
+                       
                         SportShoeCreateDto sportShoeCreateDto = BuildCreateDto();
                         var addResult = _sportShoeService.Add(sportShoeCreateDto);
 
@@ -148,20 +181,21 @@ namespace TP1Gnasso.WForms
 
         private SportShoeCreateDto BuildCreateDto()
         {
-            var dto = new SportShoeCreateDto();
+            return new SportShoeCreateDto()
+            {
 
-            dto.Model = modelTextBox.Text.Trim();
-            dto.Price = decimal.Parse(priceTextBox.Text);
-            dto.ReleaseDate = dateTimePicker1.Value;
-            dto.Active = activeCheckbox.Checked;
+                Model = modelTextBox.Text.Trim(),
+                Price = decimal.Parse(priceTextBox.Text),
+                ReleaseDate = dateTimePicker1.Value,
+                Active = activeCheckbox.Checked,
 
-            dto.Brand = brandTextBox.Text.Trim();
-            dto.Sport = sportTextBox.Text.Trim();
+                Brand = brandTextBox.Text.Trim(),
+                Sport = sportTextBox.Text.Trim(),
 
-            dto.GenreId = (int)genreComboBox.SelectedValue!;
-            dto.SizeId = (int)sizeComboBox.SelectedValue!;
+                GenreId = (int)genreComboBox.SelectedValue!,
+                SizeId = (int)sizeComboBox.SelectedValue!
+            };
 
-            return dto;
         }
 
         private bool ValidateData()
@@ -205,6 +239,114 @@ namespace TP1Gnasso.WForms
         public void SetSportShoe(SportShoeEditDto? sportShoeUpdateDto)
         {
             _sportShoeUpdateDto = sportShoeUpdateDto!;
+        }
+
+        private bool VerifyBrand()
+        {
+            var result = _brandService.GetBrandByName(
+                brandTextBox.Text.Trim());
+
+            if (result.IsSuccess)
+            {
+                return true;
+            }
+
+            var drNewBrand = MessageBox.Show(
+                "The brand does not exist. Do you want to create it?",
+                "New Brand",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (drNewBrand == DialogResult.No)
+            {
+                return false;
+            }
+
+            var frm = new frmBrandsAE(_brandService);
+
+            frm.SetBrandName( brandTextBox.Text.Trim());
+
+
+            if (frm.ShowDialog(this) != DialogResult.OK)
+            {
+                return false;
+            }
+
+            var newResult = _brandService.GetBrandByName(
+                brandTextBox.Text.Trim());
+
+            if (newResult.IsFailure)
+            {
+                MessageBox.Show(
+                    "The brand was not created.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                return false;
+            }
+
+            MessageBox.Show(
+                "Brand created successfully.",
+                "Message",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+
+            return true;
+        }
+
+        private bool VerifySport()
+        {
+            var result = _sportService.GetSportByName(
+                sportTextBox.Text.Trim());
+
+            if (result.IsSuccess)
+            {
+                return true;
+            }
+
+            var drNewSport = MessageBox.Show(
+                "The sport does not exist. Do you want to create it?",
+                "New Sport",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (drNewSport == DialogResult.No)
+            {
+                return false;
+            }
+
+            var frm = new frmSportsAE(_sportService);
+
+            frm.SetSportName(sportTextBox.Text.Trim());
+
+
+            if (frm.ShowDialog(this) != DialogResult.OK)
+            {
+                return false;
+            }
+
+            var newResult = _sportService.GetSportByName(
+                sportTextBox.Text.Trim());
+
+            if (newResult.IsFailure)
+            {
+                MessageBox.Show(
+                    "The sport was not created.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                return false;
+            }
+
+            MessageBox.Show(
+                "Sport created successfully.",
+                "Message",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+
+            return true;
         }
     }
 

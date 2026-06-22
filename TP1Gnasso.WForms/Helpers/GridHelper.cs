@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TP1Gnasso.Service.DTOs.Genre;
+using TP1Gnasso.Service.DTOs.Size;
 using TP1Gnasso.Service.DTOs.SportShoe;
 
 namespace TP1Gnasso.WForms.Helpers
@@ -67,7 +69,24 @@ namespace TP1Gnasso.WForms.Helpers
         {
             grid.Rows.Clear();
         }
+
+        public static void LoadComboBoxSizes(ComboBox sizesCombo, List<SizeListDto> sizes)
+        {
+            
+            sizesCombo.DataSource = sizes;
+            sizesCombo.DisplayMember = nameof(SizeListDto.Number);
+            sizesCombo.ValueMember = nameof(SizeListDto.SizeId);
+        }
+
+        public static void LoadComboBoxGenre(ComboBox genresCombo, List<GenreListDto> genres)
+        {
+            genresCombo.DataSource = genres;
+            genresCombo.DisplayMember = nameof(GenreListDto.Name);
+            genresCombo.ValueMember = nameof(GenreListDto.GenreId);
+        }
+
     }
+    
 
 }
 

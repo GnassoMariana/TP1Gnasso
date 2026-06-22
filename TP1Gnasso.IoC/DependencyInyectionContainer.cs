@@ -24,11 +24,13 @@ namespace TP1Gnasso.IoC
             services.AddScoped<ISportRepository, SportRepository>();
             services.AddScoped<ISizeRepository, SizeRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
+            services.AddScoped<IGenreRepository,  GenreRepository>();
 
             services.AddScoped<ISportShoeService, SportShoeService>();
             services.AddScoped<ISportService, SportService>();
             services.AddScoped<IBrandService, BrandService>();
             services.AddScoped<ISizeService, SizeService>();
+            services.AddScoped<IGenreService, GenreService>();
 
             services.AddScoped<IValidator<SportShoe>, SportShoeValidator>();
             services.AddScoped<IValidator<Sport>, SportValidator>();

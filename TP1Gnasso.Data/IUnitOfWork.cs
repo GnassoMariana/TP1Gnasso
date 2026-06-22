@@ -13,6 +13,7 @@ namespace TP1Gnasso.Data
         ISportRepository Sports { get; }
         ISizeRepository Sizes { get; }
         IBrandRepository Brands { get; }
+        IGenreRepository Genres { get; }
         void Save();
 
         void RollBack();

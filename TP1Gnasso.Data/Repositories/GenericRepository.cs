@@ -104,7 +104,7 @@ namespace TP1Gnasso.Data.Repositories
                 var entidadEnDb = _dbSet.Find(id);
                 if (entidadEnDb is null)
                 {
-                    throw new KeyNotFoundException("Unable to delete the record. Id is null");
+                    throw new KeyNotFoundException("Unable to update the record. Id is null");
                 }
                 _dbSet.Entry(entidadEnDb).CurrentValues.SetValues(Entidad);
             //}

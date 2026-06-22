@@ -46,7 +46,54 @@ namespace TP1Gnasso.WForms
 
         private void updateButton_Click(object sender, EventArgs e)
         {
+            if(dataGridView1.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Select a sport shoe to update.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
 
+            }
+            var selectedRow = dataGridView1.SelectedRows[0];
+            if (selectedRow.Tag is null) return;
+            var sportShoeListDto = (SportShoeListDto)selectedRow.Tag;
+
+            using(var scope = _serviceProvider.CreateScope())
+            {
+                try
+                {
+                    var sportShoeService = scope.ServiceProvider.GetRequiredService<ISportShoeService>();
+                    var queryResult = sportShoeService.GetForUpdate(sportShoeListDto.SportShoeId);
+
+                    if(queryResult.IsFailure)
+                    {
+                        ErrorHelper.ShowErrors(queryResult.Errors);
+                        return;
+                    }
+
+                    var sportShoeUpdateDto = queryResult.Value;
+                    using (SportShoesAE frm = scope.ServiceProvider.GetRequiredService<SportShoesAE>())
+                    {
+                        frm.Text = "Update Sport Shoe:";
+                        frm.SetSportShoe(sportShoeUpdateDto);
+                        frm.ShowDialog();
+
+                        if (frm.ConcurrencyConflict)
+                        {
+                            LoadGrid();
+                        }
+                        if (frm.DataChanged)
+                        {
+                            LoadGrid();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+              
         }
 
         private void deleteButton_Click(object sender, EventArgs e)

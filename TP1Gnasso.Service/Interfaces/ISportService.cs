@@ -17,6 +17,8 @@ namespace TP1Gnasso.Service.Interfaces
         Result Update(SportEditDto sportDto);
         Result Delete(int id);
 
+        Result<SportListDto> GetSportByName(string name);
+
 
     }
 }
