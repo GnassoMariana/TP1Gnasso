@@ -111,6 +111,7 @@
             Controls.Add(saveButton);
             Name = "frmSportsAE";
             Text = "frmSportsAE";
+            Load += frmSportsAE_Load;
             ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
             PerformLayout();

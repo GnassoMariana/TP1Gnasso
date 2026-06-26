@@ -90,5 +90,10 @@ namespace TP1Gnasso.WForms
         {
             sportTextBox.Text = sportName;
         }
+
+        private void frmSportsAE_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

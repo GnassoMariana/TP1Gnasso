@@ -152,6 +152,8 @@ namespace TP1Gnasso.WForms
                         }
                         DataChanged = true;
                         MessageBox.Show("Record updated");
+                        DialogResult = DialogResult.OK;
+                        Close();
                     }
 
                 }
