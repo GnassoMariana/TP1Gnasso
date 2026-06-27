@@ -57,7 +57,7 @@
             sportShoesButton.TabIndex = 1;
             sportShoesButton.Text = "Sport Shoes Menu";
             sportShoesButton.UseVisualStyleBackColor = true;
-            sportShoesButton.Click += this.sportShoesButton_Click;
+            sportShoesButton.Click += sportShoesButton_Click;
             // 
             // brandsButton
             // 
@@ -67,6 +67,7 @@
             brandsButton.TabIndex = 2;
             brandsButton.Text = "Brands Menu";
             brandsButton.UseVisualStyleBackColor = true;
+            brandsButton.Click += brandsButton_Click;
             // 
             // sportsButton
             // 
@@ -76,6 +77,7 @@
             sportsButton.TabIndex = 3;
             sportsButton.Text = "Sports Menu";
             sportsButton.UseVisualStyleBackColor = true;
+            sportsButton.Click += sportsButton_Click;
             // 
             // sizesButton
             // 
@@ -85,6 +87,7 @@
             sizesButton.TabIndex = 4;
             sizesButton.Text = "Sizes Menu";
             sizesButton.UseVisualStyleBackColor = true;
+            sizesButton.Click += sizesButton_Click;
             // 
             // genreButton
             // 
@@ -94,6 +97,7 @@
             genreButton.TabIndex = 5;
             genreButton.Text = "Genre";
             genreButton.UseVisualStyleBackColor = true;
+            genreButton.Click += genreButton_Click;
             // 
             // label1
             // 

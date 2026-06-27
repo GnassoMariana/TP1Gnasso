@@ -7,7 +7,7 @@ using TP1Gnasso.Entities;
 
 namespace TP1Gnasso.Data.Interfaces
 {
-    public interface IBrandRepository: IGenericRepository<Brand>
+    public interface IBrandRepository: IConcurrencyRepository<Brand>
 
     {
         bool Exist(string Name, int? BrandId=null);

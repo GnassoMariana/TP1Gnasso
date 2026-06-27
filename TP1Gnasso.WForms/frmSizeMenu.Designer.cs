@@ -32,6 +32,9 @@
             cantidadLabel = new Label();
             label1 = new Label();
             sizeDgv = new DataGridView();
+            idColumn = new DataGridViewTextBoxColumn();
+            numberColumn = new DataGridViewTextBoxColumn();
+            activeColumn = new DataGridViewTextBoxColumn();
             toolStrip1 = new ToolStrip();
             addButton = new ToolStripButton();
             updateButton = new ToolStripButton();
@@ -40,12 +43,9 @@
             refreshButton = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
             closeButton = new ToolStripButton();
-            idColumn = new DataGridViewTextBoxColumn();
-            numberColumn = new DataGridViewTextBoxColumn();
-            activeColumn = new DataGridViewTextBoxColumn();
+            tsbActive = new ToolStripDropDownButton();
             activeToolStripMenuItem = new ToolStripMenuItem();
             inactiveToolStripMenuItem = new ToolStripMenuItem();
-            tsbActive = new ToolStripDropDownButton();
             ((System.ComponentModel.ISupportInitialize)sizeDgv).BeginInit();
             toolStrip1.SuspendLayout();
             SuspendLayout();
@@ -79,6 +79,30 @@
             sizeDgv.RowHeadersWidth = 51;
             sizeDgv.Size = new Size(434, 423);
             sizeDgv.TabIndex = 5;
+            // 
+            // idColumn
+            // 
+            idColumn.HeaderText = "Id";
+            idColumn.MinimumWidth = 6;
+            idColumn.Name = "idColumn";
+            idColumn.ReadOnly = true;
+            idColumn.Width = 125;
+            // 
+            // numberColumn
+            // 
+            numberColumn.HeaderText = "Number";
+            numberColumn.MinimumWidth = 6;
+            numberColumn.Name = "numberColumn";
+            numberColumn.ReadOnly = true;
+            numberColumn.Width = 125;
+            // 
+            // activeColumn
+            // 
+            activeColumn.HeaderText = "Active";
+            activeColumn.MinimumWidth = 6;
+            activeColumn.Name = "activeColumn";
+            activeColumn.ReadOnly = true;
+            activeColumn.Width = 125;
             // 
             // toolStrip1
             // 
@@ -145,42 +169,6 @@
             closeButton.Size = new Size(49, 24);
             closeButton.Text = "Close";
             // 
-            // idColumn
-            // 
-            idColumn.HeaderText = "Id";
-            idColumn.MinimumWidth = 6;
-            idColumn.Name = "idColumn";
-            idColumn.ReadOnly = true;
-            idColumn.Width = 125;
-            // 
-            // numberColumn
-            // 
-            numberColumn.HeaderText = "Number";
-            numberColumn.MinimumWidth = 6;
-            numberColumn.Name = "numberColumn";
-            numberColumn.ReadOnly = true;
-            numberColumn.Width = 125;
-            // 
-            // activeColumn
-            // 
-            activeColumn.HeaderText = "Active";
-            activeColumn.MinimumWidth = 6;
-            activeColumn.Name = "activeColumn";
-            activeColumn.ReadOnly = true;
-            activeColumn.Width = 125;
-            // 
-            // activeToolStripMenuItem
-            // 
-            activeToolStripMenuItem.Name = "activeToolStripMenuItem";
-            activeToolStripMenuItem.Size = new Size(224, 26);
-            activeToolStripMenuItem.Text = "Active";
-            // 
-            // inactiveToolStripMenuItem
-            // 
-            inactiveToolStripMenuItem.Name = "inactiveToolStripMenuItem";
-            inactiveToolStripMenuItem.Size = new Size(224, 26);
-            inactiveToolStripMenuItem.Text = "Inactive";
-            // 
             // tsbActive
             // 
             tsbActive.DisplayStyle = ToolStripItemDisplayStyle.Text;
@@ -190,6 +178,18 @@
             tsbActive.Name = "tsbActive";
             tsbActive.Size = new Size(56, 24);
             tsbActive.Text = "Filter";
+            // 
+            // activeToolStripMenuItem
+            // 
+            activeToolStripMenuItem.Name = "activeToolStripMenuItem";
+            activeToolStripMenuItem.Size = new Size(143, 26);
+            activeToolStripMenuItem.Text = "Active";
+            // 
+            // inactiveToolStripMenuItem
+            // 
+            inactiveToolStripMenuItem.Name = "inactiveToolStripMenuItem";
+            inactiveToolStripMenuItem.Size = new Size(143, 26);
+            inactiveToolStripMenuItem.Text = "Inactive";
             // 
             // frmSizeMenu
             // 
@@ -202,6 +202,7 @@
             Controls.Add(toolStrip1);
             Name = "frmSizeMenu";
             Text = "frmSizeMenu";
+            Load += frmSizeMenu_Load;
             ((System.ComponentModel.ISupportInitialize)sizeDgv).EndInit();
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TP1Gnasso.Entities;
 using TP1Gnasso.Service.DTOs.Brand;
+using TP1Gnasso.Service.DTOs.SportShoe;
 
 namespace TP1Gnasso.Service.Mappers
 {
@@ -16,7 +17,8 @@ namespace TP1Gnasso.Service.Mappers
             {
                 BrandId = brand.BrandId,
                 Name = brand.Name,
-                Country = brand.Country
+                Country = brand.Country,
+                 Active = brand.Active
             };
         }
 
@@ -26,7 +28,8 @@ namespace TP1Gnasso.Service.Mappers
             {
                 BrandId = brand.BrandId,
                 Name = brand.Name,
-                Country = brand.Country
+                Country = brand.Country,
+                Active = brand.Active
 
 
             };
@@ -53,5 +56,15 @@ namespace TP1Gnasso.Service.Mappers
                 Active = brandDto.Active
             };
         }
+
+        public static BrandDeleteDto ToDeleteDto(Brand brand)
+        {
+            return new BrandDeleteDto
+            {
+                BrandId = brand.BrandId,
+                RowVersion = brand.RowVersion
+            };
+        }
+
     }
 }

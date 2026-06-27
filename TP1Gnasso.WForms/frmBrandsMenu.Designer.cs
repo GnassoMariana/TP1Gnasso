@@ -31,7 +31,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmBrandsMenu));
             cantidadLabel = new Label();
             label1 = new Label();
-            dataGridView1 = new DataGridView();
+            brandDgv = new DataGridView();
+            idColumn = new DataGridViewTextBoxColumn();
+            nameColumn = new DataGridViewTextBoxColumn();
+            countryColumn = new DataGridViewTextBoxColumn();
+            activeColumn = new DataGridViewTextBoxColumn();
             toolStrip1 = new ToolStrip();
             addButton = new ToolStripButton();
             updateButton = new ToolStripButton();
@@ -43,11 +47,7 @@
             tsbActive = new ToolStripDropDownButton();
             activeToolStripMenuItem = new ToolStripMenuItem();
             inactiveToolStripMenuItem = new ToolStripMenuItem();
-            idColumn = new DataGridViewTextBoxColumn();
-            nameColumn = new DataGridViewTextBoxColumn();
-            countryColumn = new DataGridViewTextBoxColumn();
-            activeColumn = new DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)brandDgv).BeginInit();
             toolStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -68,18 +68,50 @@
             label1.TabIndex = 6;
             label1.Text = "Cantidad:";
             // 
-            // dataGridView1
+            // brandDgv
             // 
-            dataGridView1.AllowUserToDeleteRows = false;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { idColumn, nameColumn, countryColumn, activeColumn });
-            dataGridView1.Dock = DockStyle.Fill;
-            dataGridView1.Location = new Point(0, 27);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.ReadOnly = true;
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(553, 423);
-            dataGridView1.TabIndex = 5;
+            brandDgv.AllowUserToDeleteRows = false;
+            brandDgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            brandDgv.Columns.AddRange(new DataGridViewColumn[] { idColumn, nameColumn, countryColumn, activeColumn });
+            brandDgv.Dock = DockStyle.Fill;
+            brandDgv.Location = new Point(0, 27);
+            brandDgv.Name = "brandDgv";
+            brandDgv.ReadOnly = true;
+            brandDgv.RowHeadersWidth = 51;
+            brandDgv.Size = new Size(553, 423);
+            brandDgv.TabIndex = 5;
+            // 
+            // idColumn
+            // 
+            idColumn.HeaderText = "Id";
+            idColumn.MinimumWidth = 6;
+            idColumn.Name = "idColumn";
+            idColumn.ReadOnly = true;
+            idColumn.Width = 125;
+            // 
+            // nameColumn
+            // 
+            nameColumn.HeaderText = "Name";
+            nameColumn.MinimumWidth = 6;
+            nameColumn.Name = "nameColumn";
+            nameColumn.ReadOnly = true;
+            nameColumn.Width = 125;
+            // 
+            // countryColumn
+            // 
+            countryColumn.HeaderText = "Country";
+            countryColumn.MinimumWidth = 6;
+            countryColumn.Name = "countryColumn";
+            countryColumn.ReadOnly = true;
+            countryColumn.Width = 125;
+            // 
+            // activeColumn
+            // 
+            activeColumn.HeaderText = "Active";
+            activeColumn.MinimumWidth = 6;
+            activeColumn.Name = "activeColumn";
+            activeColumn.ReadOnly = true;
+            activeColumn.Width = 125;
             // 
             // toolStrip1
             // 
@@ -99,6 +131,7 @@
             addButton.Name = "addButton";
             addButton.Size = new Size(41, 24);
             addButton.Text = "Add";
+            addButton.Click += addButton_Click;
             // 
             // updateButton
             // 
@@ -108,6 +141,7 @@
             updateButton.Name = "updateButton";
             updateButton.Size = new Size(62, 24);
             updateButton.Text = "Update";
+            updateButton.Click += updateButton_Click;
             // 
             // deleteButton
             // 
@@ -117,6 +151,7 @@
             deleteButton.Name = "deleteButton";
             deleteButton.Size = new Size(57, 24);
             deleteButton.Text = "Delete";
+            deleteButton.Click += deleteButton_Click;
             // 
             // toolStripSeparator1
             // 
@@ -168,38 +203,6 @@
             inactiveToolStripMenuItem.Size = new Size(143, 26);
             inactiveToolStripMenuItem.Text = "Inactive";
             // 
-            // idColumn
-            // 
-            idColumn.HeaderText = "Id";
-            idColumn.MinimumWidth = 6;
-            idColumn.Name = "idColumn";
-            idColumn.ReadOnly = true;
-            idColumn.Width = 125;
-            // 
-            // nameColumn
-            // 
-            nameColumn.HeaderText = "Name";
-            nameColumn.MinimumWidth = 6;
-            nameColumn.Name = "nameColumn";
-            nameColumn.ReadOnly = true;
-            nameColumn.Width = 125;
-            // 
-            // countryColumn
-            // 
-            countryColumn.HeaderText = "Country";
-            countryColumn.MinimumWidth = 6;
-            countryColumn.Name = "countryColumn";
-            countryColumn.ReadOnly = true;
-            countryColumn.Width = 125;
-            // 
-            // activeColumn
-            // 
-            activeColumn.HeaderText = "Active";
-            activeColumn.MinimumWidth = 6;
-            activeColumn.Name = "activeColumn";
-            activeColumn.ReadOnly = true;
-            activeColumn.Width = 125;
-            // 
             // frmBrandsMenu
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -207,11 +210,12 @@
             ClientSize = new Size(553, 450);
             Controls.Add(cantidadLabel);
             Controls.Add(label1);
-            Controls.Add(dataGridView1);
+            Controls.Add(brandDgv);
             Controls.Add(toolStrip1);
             Name = "frmBrandsMenu";
             Text = "frmBrandsMenu";
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            Load += frmBrandsMenu_Load;
+            ((System.ComponentModel.ISupportInitialize)brandDgv).EndInit();
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
             ResumeLayout(false);
@@ -222,7 +226,7 @@
 
         private Label cantidadLabel;
         private Label label1;
-        private DataGridView dataGridView1;
+        private DataGridView brandDgv;
         private DataGridViewTextBoxColumn idColumn;
         private DataGridViewTextBoxColumn nameColumn;
         private DataGridViewTextBoxColumn countryColumn;

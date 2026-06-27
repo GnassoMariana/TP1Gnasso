@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TP1Gnasso.Service.DTOs.Brand;
 using TP1Gnasso.Service.DTOs.Genre;
 using TP1Gnasso.Service.DTOs.Size;
+using TP1Gnasso.Service.DTOs.Sport;
 using TP1Gnasso.Service.DTOs.SportShoe;
 
 namespace TP1Gnasso.WForms.Helpers
@@ -36,11 +38,28 @@ namespace TP1Gnasso.WForms.Helpers
                     r.Cells[7].Value = tipoDto.ReleaseDate;
                     r.Cells[8].Value = tipoDto.Active;
                     break;
-                //case FormaDePagoListDto formaDto:
-                //    r.Cells[0].Value = formaDto.FormaDePagoId;
-                //    r.Cells[1].Value = formaDto.Nombre;
-                //    r.Cells[2].Value = formaDto.Activo;
-                //    break;
+                case BrandListDto brandDto:
+                   r.Cells[0].Value = brandDto.BrandId;
+                   r.Cells[1].Value = brandDto.Name;
+                   r.Cells[2].Value = brandDto.Country;
+                   r.Cells[3].Value = brandDto.Active;
+                    break;
+                case SportListDto sportDto:
+                    r.Cells[0].Value = sportDto.SportId;
+                    r.Cells[1].Value = sportDto.Name;
+                    r.Cells[2].Value = sportDto.Active;
+                    break;
+                case SizeListDto sizeDto:
+                    r.Cells[0].Value = sizeDto.SizeId;
+                    r.Cells[1].Value = sizeDto.Number;
+                    r.Cells[2].Value = sizeDto.Active;
+                    break;
+                case GenreListDto genreDto:
+                    r.Cells[0].Value = genreDto.GenreId;
+                    r.Cells[1].Value = genreDto.Name;
+                    break;
+
+
 
             }
 

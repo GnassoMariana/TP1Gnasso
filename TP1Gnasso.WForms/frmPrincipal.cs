@@ -29,16 +29,51 @@ namespace TP1Gnasso.WForms
         private void logoutButton_Click(object sender, EventArgs e)
         {
             Close();
-        } 
-        
+        }
+
         private void sportShoesButton_Click(object sender, EventArgs e)
         {
-            using( var frm = _serviceProvider.GetRequiredService<frmSportShoesMenu>())
+            using (var frm = _serviceProvider.GetRequiredService<frmSportShoesMenu>())
             {
                 frm.Text = "Sport Shoes List";
                 frm.ShowDialog();
             }
         }
-        
+
+        private void brandsButton_Click(object sender, EventArgs e)
+        {
+            using (var frm = _serviceProvider.GetRequiredService<frmBrandsMenu>())
+            {
+                frm.Text = " Brands List";
+                frm.ShowDialog();
+            }
+        }
+
+        private void sportsButton_Click(object sender, EventArgs e)
+        {
+            using (var frm = _serviceProvider.GetRequiredService<frmSportsMenu>())
+            {
+                frm.Text = "Sports List";
+                frm.ShowDialog();
+            }
+        }
+
+        private void sizesButton_Click(object sender, EventArgs e)
+        {
+            using (var frm = _serviceProvider.GetRequiredService<frmSizeMenu>())
+            {
+                frm.Text = "Sizes List";
+                frm.ShowDialog();
+            }
+        }
+
+        private void genreButton_Click(object sender, EventArgs e)
+        {
+            using(var frm = _serviceProvider.GetRequiredService<frmGenreMenu>())
+            {
+                frm.Text = "Genre List";
+                frm.ShowDialog();
+            }
+        }
     }
 }

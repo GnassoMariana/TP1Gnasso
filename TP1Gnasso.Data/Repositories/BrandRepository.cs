@@ -9,7 +9,7 @@ using TP1Gnasso.Entities;
 
 namespace TP1Gnasso.Data.Repositories
 {
-    public class BrandRepository : GenericRepository<Brand>, IBrandRepository
+    public class BrandRepository : ConcurrencyRepository<Brand>, IBrandRepository
     {
         private readonly SportShoesDbContext _dbContext;
 
@@ -61,5 +61,30 @@ namespace TP1Gnasso.Data.Repositories
         //    return _dbContext.Brands.AsNoTracking()
         //        .AsQueryable();
         //}
+        public override List<Brand> GetAll()
+        {
+            return _dbContext.Brands
+                .AsNoTracking().ToList();
+
+        }
+
+
+        public override Brand GetById(int id)
+        {
+            return _dbContext.Brands
+                .FirstOrDefault(b => b.BrandId == id)!;
+        }
+
+        public override IQueryable<Brand> Query()
+        {
+            return _dbContext.Brands
+                .AsNoTracking();
+        }
+
+        public void Update(Brand brand)
+        {
+            _dbContext.Brands.Update(brand);
+        }
+
     }
 }

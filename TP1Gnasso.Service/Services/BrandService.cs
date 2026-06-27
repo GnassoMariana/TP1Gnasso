@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using TP1Gnasso.Data;
 using TP1Gnasso.Entities;
 using TP1Gnasso.Service.Common;
 using TP1Gnasso.Service.DTOs.Brand;
+using TP1Gnasso.Service.DTOs.SportShoe;
 using TP1Gnasso.Service.Interfaces;
 using TP1Gnasso.Service.Mappers;
 
@@ -26,6 +28,7 @@ namespace TP1Gnasso.Service.Services
         public Result Add(BrandCreateDto brandDto)
         {
             var brand = BrandMapper.Toentity(brandDto);
+
             var result = _validator.Validate(brand);
             if(!result.IsValid)
             {
@@ -71,6 +74,37 @@ namespace TP1Gnasso.Service.Services
             }
         }
 
+        public Result Delete(BrandDeleteDto brandDeleteDto)
+        {
+            try
+            {
+                _uow.Brands.Delete(brandDeleteDto.BrandId, brandDeleteDto.RowVersion);
+                _uow.Save();
+                return Result.Success();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                _uow.RollBack();
+                return Result.ConcurrencyConflict("Another user has already modified the record");
+            }
+            catch (KeyNotFoundException)
+            {
+                _uow.RollBack();
+                return Result.ConcurrencyConflict("Sport shoe not found");
+            }
+            catch (Exception ex)
+            {
+                _uow.RollBack();
+                return Result.Failure(ex.Message);
+            }
+        }
+        
+
+        public Result<List<SportShoeListDto>> FilterByActive(bool activo)
+        {
+            throw new NotImplementedException();
+        }
+
         public Result<List<BrandListDto>> GetAll()
         {
             var brands = _uow.Brands.GetAll()
@@ -114,6 +148,17 @@ namespace TP1Gnasso.Service.Services
 
             }
             return Result<BrandEditDto>.Success(BrandMapper.ToBrandEditDto(brand));
+        }
+
+        public Result<BrandDeleteDto> GetToDelete(int id)
+        {
+            var brand = _uow.Brands.GetById(id);
+            if (brand != null)
+            {
+                var brandDeleteDto = BrandMapper.ToDeleteDto(brand);
+                return Result<BrandDeleteDto>.Success(brandDeleteDto);
+            }
+            return Result<BrandDeleteDto>.Failure("Brand not found");
         }
 
         public Result Update(BrandEditDto brandDto)

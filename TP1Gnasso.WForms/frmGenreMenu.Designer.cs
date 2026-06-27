@@ -72,6 +72,7 @@
             Controls.Add(genreDgv);
             Name = "frmGenreMenu";
             Text = "frmGenreMenu";
+            Load += frmGenreMenu_Load;
             ((System.ComponentModel.ISupportInitialize)genreDgv).EndInit();
             ResumeLayout(false);
         }

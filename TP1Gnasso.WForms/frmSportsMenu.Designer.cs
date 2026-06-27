@@ -32,6 +32,9 @@
             cantidadLabel = new Label();
             label1 = new Label();
             sportsDgv = new DataGridView();
+            idColumn = new DataGridViewTextBoxColumn();
+            nameColumn = new DataGridViewTextBoxColumn();
+            activeColumn = new DataGridViewTextBoxColumn();
             toolStrip1 = new ToolStrip();
             addButton = new ToolStripButton();
             updateButton = new ToolStripButton();
@@ -43,9 +46,6 @@
             tsbActive = new ToolStripDropDownButton();
             activeToolStripMenuItem = new ToolStripMenuItem();
             inactiveToolStripMenuItem = new ToolStripMenuItem();
-            idColumn = new DataGridViewTextBoxColumn();
-            nameColumn = new DataGridViewTextBoxColumn();
-            activeColumn = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)sportsDgv).BeginInit();
             toolStrip1.SuspendLayout();
             SuspendLayout();
@@ -78,6 +78,30 @@
             sportsDgv.RowHeadersWidth = 51;
             sportsDgv.Size = new Size(433, 385);
             sportsDgv.TabIndex = 5;
+            // 
+            // idColumn
+            // 
+            idColumn.HeaderText = "Id";
+            idColumn.MinimumWidth = 6;
+            idColumn.Name = "idColumn";
+            idColumn.ReadOnly = true;
+            idColumn.Width = 125;
+            // 
+            // nameColumn
+            // 
+            nameColumn.HeaderText = "Name";
+            nameColumn.MinimumWidth = 6;
+            nameColumn.Name = "nameColumn";
+            nameColumn.ReadOnly = true;
+            nameColumn.Width = 125;
+            // 
+            // activeColumn
+            // 
+            activeColumn.HeaderText = "Active";
+            activeColumn.MinimumWidth = 6;
+            activeColumn.Name = "activeColumn";
+            activeColumn.ReadOnly = true;
+            activeColumn.Width = 125;
             // 
             // toolStrip1
             // 
@@ -166,30 +190,6 @@
             inactiveToolStripMenuItem.Size = new Size(143, 26);
             inactiveToolStripMenuItem.Text = "Inactive";
             // 
-            // idColumn
-            // 
-            idColumn.HeaderText = "Id";
-            idColumn.MinimumWidth = 6;
-            idColumn.Name = "idColumn";
-            idColumn.ReadOnly = true;
-            idColumn.Width = 125;
-            // 
-            // nameColumn
-            // 
-            nameColumn.HeaderText = "Name";
-            nameColumn.MinimumWidth = 6;
-            nameColumn.Name = "nameColumn";
-            nameColumn.ReadOnly = true;
-            nameColumn.Width = 125;
-            // 
-            // activeColumn
-            // 
-            activeColumn.HeaderText = "Active";
-            activeColumn.MinimumWidth = 6;
-            activeColumn.Name = "activeColumn";
-            activeColumn.ReadOnly = true;
-            activeColumn.Width = 125;
-            // 
             // frmSportsMenu
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -201,6 +201,7 @@
             Controls.Add(toolStrip1);
             Name = "frmSportsMenu";
             Text = "frmSportsMenu";
+            Load += frmSportsMenu_Load;
             ((System.ComponentModel.ISupportInitialize)sportsDgv).EndInit();
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
