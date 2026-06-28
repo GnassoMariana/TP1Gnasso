@@ -1,15 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using TP1Gnasso.Service.DTOs.Brand;
-using TP1Gnasso.Service.DTOs.SportShoe;
 using TP1Gnasso.Service.Interfaces;
 using TP1Gnasso.WForms.Helpers;
 
@@ -195,6 +185,85 @@ namespace TP1Gnasso.WForms
 
         }
 
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void refreshButton_Click(object sender, EventArgs e)
+        {
+            LoadGrid();
+            ManejarControles(false);
+        }
+
+        private void activeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var brandsService = scope.ServiceProvider.GetRequiredService<IBrandService>();
+                try
+                {
+                    var result = brandsService.FilterByActive(true);
+                    if (result.IsFailure)
+                    {
+                        string errors = string.Join("\n", result.Errors);
+                        MessageBox.Show(errors, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    brandsList = result.Value!;
+                    ShowRecordsOnGrid(brandsList);
+                    ManejarControles(true);
+                }
+
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+
+        }
+
+        private void ManejarControles(bool v)
+        {
+            activeFilter = v;
+            tsbActive.BackColor = activeFilter ? Color.Red : SystemColors.Control;
+
+            addButton.Enabled = !v;
+            updateButton.Enabled = !v;
+            deleteButton.Enabled = !v;
+        }
+
+        private void inactiveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var brandService = scope.ServiceProvider.GetRequiredService<IBrandService>();
+                try
+                {
+                    var result = brandService.FilterByActive(false);
+                    if (result.IsFailure)
+                    {
+                        string errors = string.Join("\n", result.Errors);
+                        MessageBox.Show(errors, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    brandsList = result.Value!;
+                    ShowRecordsOnGrid(brandsList);
+                    ManejarControles(true);
+                }
+
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+
+
+        }
     }
 }
 

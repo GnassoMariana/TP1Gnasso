@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TP1Gnasso.Entities;
+using TP1Gnasso.Service.DTOs.Brand;
 using TP1Gnasso.Service.DTOs.Sport;
 
 namespace TP1Gnasso.Service.Mappers
@@ -43,9 +44,21 @@ namespace TP1Gnasso.Service.Mappers
         {
             return new Sport
             {
+                SportId = sportEditdto.SportId,
                 Name = sportEditdto.Name,
                 Active = sportEditdto.Active
             };
         }
+
+        public static SportDeleteDto ToDeleteDto(Sport sport)
+        {
+            return new SportDeleteDto
+            {
+                SportId = sport.SportId,
+                RowVersion = sport.RowVersion
+            };
+        }
+
+
     }
 }

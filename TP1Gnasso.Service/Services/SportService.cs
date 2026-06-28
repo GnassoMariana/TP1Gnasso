@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using TP1Gnasso.Data;
 using TP1Gnasso.Entities;
 using TP1Gnasso.Service.Common;
+using TP1Gnasso.Service.DTOs.Brand;
 using TP1Gnasso.Service.DTOs.Sport;
 using TP1Gnasso.Service.Interfaces;
 using TP1Gnasso.Service.Mappers;
@@ -77,6 +79,48 @@ namespace TP1Gnasso.Service.Services
             }
         }
 
+        public Result Delete(SportDeleteDto sportDeleteDto)
+        {
+            try
+            {
+                _unitOfWork.Sports.Delete(sportDeleteDto.SportId, sportDeleteDto.RowVersion);
+                _unitOfWork.Save();
+                return Result.Success();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                _unitOfWork.RollBack();
+                return Result.ConcurrencyConflict("Another user has already modified the record");
+            }
+            catch (KeyNotFoundException)
+            {
+                _unitOfWork.RollBack();
+                return Result.ConcurrencyConflict("Sport not found");
+            }
+            catch (Exception ex)
+            {
+                _unitOfWork.RollBack();
+                return Result.Failure(ex.Message);
+            }
+        }
+
+        public Result<List<SportListDto>> FilterByActive(bool activo)
+        {
+            try
+            {
+                var query = _unitOfWork.Sports.Query();
+                var list = query.Where(s => s.Active == activo);
+                var dtoList = list.Select(s => SportMapper.ToSportListDto(s)).ToList();
+                return Result<List<SportListDto>>.Success(dtoList);
+
+            }
+            catch (Exception ex)
+            {
+
+                return Result<List<SportListDto>>.Failure(ex.Message);
+            }
+        }
+
         public Result<List<SportListDto>> GetAll()
         {
             var sport = _unitOfWork.Sports.GetAll()
@@ -119,6 +163,17 @@ namespace TP1Gnasso.Service.Services
                 .Success(SportMapper.ToSportListDto(sport));
         }
 
+        public Result<SportDeleteDto> GetToDelete(int id)
+        {
+            var sport = _unitOfWork.Sports.GetById(id);
+            if (sport != null)
+            {
+                var sportToDeleteDto = SportMapper.ToDeleteDto(sport);
+                return Result<SportDeleteDto>.Success(sportToDeleteDto);
+            }
+            return Result<SportDeleteDto>.Failure("Sport not found");
+        }
+
         public Result Update(SportEditDto sportDto)
         {
             var sportToValidate = SportMapper.ToEntity(sportDto);
@@ -138,7 +193,7 @@ namespace TP1Gnasso.Service.Services
             sport.Name = sportDto.Name;
             sport.Active = sportDto.Active;
 
-            if(_unitOfWork.Sports.Exists(sport.SportId))
+            if(_unitOfWork.Sports.Exists(sport.Name!, sport.SportId))
             {
                 return Result.Failure("Sport already exists!");
             }

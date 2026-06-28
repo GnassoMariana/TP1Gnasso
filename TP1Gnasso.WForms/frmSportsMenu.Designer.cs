@@ -121,6 +121,7 @@
             addButton.Name = "addButton";
             addButton.Size = new Size(41, 24);
             addButton.Text = "Add";
+            addButton.Click += addButton_Click;
             // 
             // updateButton
             // 
@@ -130,6 +131,7 @@
             updateButton.Name = "updateButton";
             updateButton.Size = new Size(62, 24);
             updateButton.Text = "Update";
+            updateButton.Click += updateButton_Click;
             // 
             // deleteButton
             // 
@@ -139,6 +141,7 @@
             deleteButton.Name = "deleteButton";
             deleteButton.Size = new Size(57, 24);
             deleteButton.Text = "Delete";
+            deleteButton.Click += deleteButton_Click;
             // 
             // toolStripSeparator1
             // 
@@ -153,6 +156,7 @@
             refreshButton.Name = "refreshButton";
             refreshButton.Size = new Size(62, 24);
             refreshButton.Text = "Refresh";
+            refreshButton.Click += refreshButton_Click;
             // 
             // toolStripSeparator2
             // 
@@ -167,6 +171,7 @@
             closeButton.Name = "closeButton";
             closeButton.Size = new Size(49, 24);
             closeButton.Text = "Close";
+            closeButton.Click += closeButton_Click;
             // 
             // tsbActive
             // 
@@ -181,14 +186,16 @@
             // activeToolStripMenuItem
             // 
             activeToolStripMenuItem.Name = "activeToolStripMenuItem";
-            activeToolStripMenuItem.Size = new Size(143, 26);
+            activeToolStripMenuItem.Size = new Size(224, 26);
             activeToolStripMenuItem.Text = "Active";
+            activeToolStripMenuItem.Click += activeToolStripMenuItem_Click;
             // 
             // inactiveToolStripMenuItem
             // 
             inactiveToolStripMenuItem.Name = "inactiveToolStripMenuItem";
-            inactiveToolStripMenuItem.Size = new Size(143, 26);
+            inactiveToolStripMenuItem.Size = new Size(224, 26);
             inactiveToolStripMenuItem.Text = "Inactive";
+            inactiveToolStripMenuItem.Click += inactiveToolStripMenuItem_Click;
             // 
             // frmSportsMenu
             // 

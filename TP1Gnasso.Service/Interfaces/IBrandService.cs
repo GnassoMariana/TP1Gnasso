@@ -20,7 +20,7 @@ namespace TP1Gnasso.Service.Interfaces
         Result Delete(BrandDeleteDto brandDeleteDto);
 
         Result<BrandListDto> GetBrandByName(string name);
-        Result<List<SportShoeListDto>> FilterByActive(bool activo);
+        Result<List<BrandListDto>> FilterByActive(bool activo);
 
 
     }

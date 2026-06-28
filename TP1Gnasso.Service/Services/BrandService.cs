@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TP1Gnasso.Data;
 using TP1Gnasso.Entities;
 using TP1Gnasso.Service.Common;
@@ -30,12 +28,12 @@ namespace TP1Gnasso.Service.Services
             var brand = BrandMapper.Toentity(brandDto);
 
             var result = _validator.Validate(brand);
-            if(!result.IsValid)
+            if (!result.IsValid)
             {
                 return Result.Failure(result.Errors.Select(b => b.ErrorMessage).ToList());
 
             }
-            if(_uow.Brands.Exist(brand.Name!, brand.BrandId))
+            if (_uow.Brands.Exist(brand.Name!, brand.BrandId))
             {
                 return Result.Failure("Same name brand already exists!");
             }
@@ -45,7 +43,7 @@ namespace TP1Gnasso.Service.Services
                 _uow.Save();
                 return Result.Success();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Result.Failure(ex.Message);
             }
@@ -54,11 +52,11 @@ namespace TP1Gnasso.Service.Services
         public Result Delete(int id)
         {
             var brand = _uow.Brands.GetById(id);
-            if(brand == null)
+            if (brand == null)
             {
                 return Result.Failure("Brand not found!");
             }
-            if(_uow.Brands.HasShoes(id))
+            if (_uow.Brands.HasShoes(id))
             {
                 return Result.Failure("Thebrand is asociated with shoes, it cannot be deleted!");
             }
@@ -68,7 +66,7 @@ namespace TP1Gnasso.Service.Services
                 _uow.Save();
                 return Result.Success();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Result.Failure(ex.Message);
             }
@@ -98,11 +96,23 @@ namespace TP1Gnasso.Service.Services
                 return Result.Failure(ex.Message);
             }
         }
-        
 
-        public Result<List<SportShoeListDto>> FilterByActive(bool activo)
+
+        public Result<List<BrandListDto>> FilterByActive(bool activo)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var query = _uow.Brands.Query();
+                var list = query.Where(b => b.Active == activo);
+                var dtoList = list.Select(b => BrandMapper.ToBrandListDto(b)).ToList();
+                return Result<List<BrandListDto>>.Success(dtoList);
+
+            }
+            catch (Exception ex)
+            {
+
+                return Result<List<BrandListDto>>.Failure(ex.Message);
+            }
         }
 
         public Result<List<BrandListDto>> GetAll()
@@ -132,7 +142,7 @@ namespace TP1Gnasso.Service.Services
         public Result<BrandListDto> GetById(int id)
         {
             var brand = _uow.Brands.GetById(id);
-            if(brand == null)
+            if (brand == null)
             {
                 return Result<BrandListDto>.Failure("Brand not found!");
             }
@@ -142,7 +152,7 @@ namespace TP1Gnasso.Service.Services
         public Result<BrandEditDto> GetForUpdate(int id)
         {
             var brand = _uow.Brands.GetById(id);
-            if(brand == null)
+            if (brand == null)
             {
                 return Result<BrandEditDto>.Failure("Brand not found!");
 
@@ -163,15 +173,15 @@ namespace TP1Gnasso.Service.Services
 
         public Result Update(BrandEditDto brandDto)
         {
-            var brandToValidate =  BrandMapper.ToEntity(brandDto);
+            var brandToValidate = BrandMapper.ToEntity(brandDto);
             var result = _validator.Validate(brandToValidate);
-            if(!result.IsValid)
+            if (!result.IsValid)
             {
                 return Result.Failure(result.Errors.Select(b => b.ErrorMessage).ToList());
             }
 
             Brand? brand = _uow.Brands.GetById(brandDto.BrandId);
-            if(brand == null)
+            if (brand == null)
             {
                 return Result.Failure("Brand not found!");
             }
@@ -180,7 +190,7 @@ namespace TP1Gnasso.Service.Services
             brand.Country = brandDto.Country;
             brand.Active = brandDto.Active;
 
-            if(_uow.Brands.Exist(brand.Name!, brand.BrandId))
+            if (_uow.Brands.Exist(brand.Name!, brand.BrandId))
             {
                 return Result.Failure("Same name brand already exists!");
             }

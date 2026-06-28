@@ -7,9 +7,10 @@ using TP1Gnasso.Entities;
 
 namespace TP1Gnasso.Data.Interfaces
 {
-    public interface ISportRepository: IGenericRepository<Sport>
+    public interface ISportRepository: IConcurrencyRepository<Sport>
+        
     {
-        bool Exists(int id);
+        bool Exists(string name, int id);
         bool HasShoes(int id);
     }
 }

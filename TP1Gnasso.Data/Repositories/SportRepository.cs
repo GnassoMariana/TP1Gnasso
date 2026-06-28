@@ -9,7 +9,7 @@ using TP1Gnasso.Entities;
 
 namespace TP1Gnasso.Data.Repositories
 {
-    public class SportRepository : GenericRepository<Sport>, ISportRepository
+    public class SportRepository : ConcurrencyRepository<Sport>, ISportRepository
     {
         private readonly SportShoesDbContext _context;
         public SportRepository(SportShoesDbContext context): base(context)
@@ -30,10 +30,10 @@ namespace TP1Gnasso.Data.Repositories
 
         //}
 
-        public bool Exists(int id)
+        public bool Exists(string name, int id)
         {
             ///Mirar bien!!!!
-            return _context.Sports.Any(s => s.SportId == id);
+            return _context.Sports.Any(s => s.Name == name && s.SportId != id);
         }
 
         //public List<Sport> GetAll()
