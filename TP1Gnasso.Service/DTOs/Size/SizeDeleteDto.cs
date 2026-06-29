@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace TP1Gnasso.Service.DTOs.Size
 {
-    public class SizeCreateDto
+    public class SizeDeleteDto
     {
-        public decimal Number { get; set; }
-        public bool Active { get; set; }
+        public int SizeId { get; set; }
+        public byte[] RowVersion { get; set; } = null!;
 
     }
 }

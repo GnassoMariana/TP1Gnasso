@@ -77,7 +77,7 @@
             sizeDgv.Name = "sizeDgv";
             sizeDgv.ReadOnly = true;
             sizeDgv.RowHeadersWidth = 51;
-            sizeDgv.Size = new Size(434, 423);
+            sizeDgv.Size = new Size(430, 423);
             sizeDgv.TabIndex = 5;
             // 
             // idColumn
@@ -110,7 +110,7 @@
             toolStrip1.Items.AddRange(new ToolStripItem[] { addButton, updateButton, deleteButton, toolStripSeparator1, refreshButton, toolStripSeparator2, closeButton, tsbActive });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(434, 27);
+            toolStrip1.Size = new Size(430, 27);
             toolStrip1.TabIndex = 4;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -122,6 +122,7 @@
             addButton.Name = "addButton";
             addButton.Size = new Size(41, 24);
             addButton.Text = "Add";
+            addButton.Click += addButton_Click;
             // 
             // updateButton
             // 
@@ -131,6 +132,7 @@
             updateButton.Name = "updateButton";
             updateButton.Size = new Size(62, 24);
             updateButton.Text = "Update";
+            updateButton.Click += updateButton_Click;
             // 
             // deleteButton
             // 
@@ -140,6 +142,7 @@
             deleteButton.Name = "deleteButton";
             deleteButton.Size = new Size(57, 24);
             deleteButton.Text = "Delete";
+            deleteButton.Click += deleteButton_Click;
             // 
             // toolStripSeparator1
             // 
@@ -154,6 +157,7 @@
             refreshButton.Name = "refreshButton";
             refreshButton.Size = new Size(62, 24);
             refreshButton.Text = "Refresh";
+            refreshButton.Click += refreshButton_Click;
             // 
             // toolStripSeparator2
             // 
@@ -168,6 +172,7 @@
             closeButton.Name = "closeButton";
             closeButton.Size = new Size(49, 24);
             closeButton.Text = "Close";
+            closeButton.Click += closeButton_Click;
             // 
             // tsbActive
             // 
@@ -182,20 +187,22 @@
             // activeToolStripMenuItem
             // 
             activeToolStripMenuItem.Name = "activeToolStripMenuItem";
-            activeToolStripMenuItem.Size = new Size(143, 26);
+            activeToolStripMenuItem.Size = new Size(224, 26);
             activeToolStripMenuItem.Text = "Active";
+            activeToolStripMenuItem.Click += activeToolStripMenuItem_Click;
             // 
             // inactiveToolStripMenuItem
             // 
             inactiveToolStripMenuItem.Name = "inactiveToolStripMenuItem";
-            inactiveToolStripMenuItem.Size = new Size(143, 26);
+            inactiveToolStripMenuItem.Size = new Size(224, 26);
             inactiveToolStripMenuItem.Text = "Inactive";
+            inactiveToolStripMenuItem.Click += inactiveToolStripMenuItem_Click;
             // 
             // frmSizeMenu
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(434, 450);
+            ClientSize = new Size(430, 450);
             Controls.Add(cantidadLabel);
             Controls.Add(label1);
             Controls.Add(sizeDgv);

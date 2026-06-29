@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TP1Gnasso.Entities;
+using TP1Gnasso.Service.DTOs.Brand;
 using TP1Gnasso.Service.DTOs.Size;
 
 namespace TP1Gnasso.Service.Mappers
@@ -49,5 +50,15 @@ namespace TP1Gnasso.Service.Mappers
                 Active = dto.Active
             };
         }
+
+        public static SizeDeleteDto ToDeleteDto(Size size)
+        {
+            return new SizeDeleteDto
+            {
+                SizeId = size.SizeId,
+                RowVersion = size.RowVersion
+            };
+        }
+
     }
 }

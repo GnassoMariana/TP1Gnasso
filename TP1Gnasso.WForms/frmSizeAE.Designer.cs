@@ -28,12 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             activeCheckBox = new CheckBox();
             label2 = new Label();
             sizeTextBox = new TextBox();
             label1 = new Label();
             cancelButton = new Button();
             saveButton = new Button();
+            errorProvider1 = new ErrorProvider(components);
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             SuspendLayout();
             // 
             // activeCheckBox
@@ -80,6 +83,7 @@
             cancelButton.TabIndex = 7;
             cancelButton.Text = "Cancel";
             cancelButton.UseVisualStyleBackColor = true;
+            cancelButton.Click += cancelButton_Click;
             // 
             // saveButton
             // 
@@ -89,6 +93,11 @@
             saveButton.TabIndex = 6;
             saveButton.Text = "Save";
             saveButton.UseVisualStyleBackColor = true;
+            saveButton.Click += saveButton_Click;
+            // 
+            // errorProvider1
+            // 
+            errorProvider1.ContainerControl = this;
             // 
             // frmSizeAE
             // 
@@ -103,6 +112,8 @@
             Controls.Add(saveButton);
             Name = "frmSizeAE";
             Text = "frmSizeAE";
+            Load += frmSizeAE_Load;
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -115,5 +126,6 @@
         private Label label1;
         private Button cancelButton;
         private Button saveButton;
+        private ErrorProvider errorProvider1;
     }
 }

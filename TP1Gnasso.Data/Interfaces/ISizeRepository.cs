@@ -7,7 +7,7 @@ using TP1Gnasso.Entities;
 
 namespace TP1Gnasso.Data.Interfaces
 {
-    public interface ISizeRepository: IGenericRepository<Size>
+    public interface ISizeRepository: IConcurrencyRepository<Size>
     {
 
         IQueryable<Size> Query();

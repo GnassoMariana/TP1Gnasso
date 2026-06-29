@@ -3,12 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TP1Gnasso.Data;
 using TP1Gnasso.Entities;
 using TP1Gnasso.Service.Common;
-using TP1Gnasso.Service.DTOs.Brand;
 using TP1Gnasso.Service.DTOs.Sport;
 using TP1Gnasso.Service.Interfaces;
 using TP1Gnasso.Service.Mappers;
@@ -22,7 +19,7 @@ namespace TP1Gnasso.Service.Services
 
         public SportService(IValidator<Sport> validator, IUnitOfWork unitOfWork)
         {
-                _validator = validator;
+            _validator = validator;
             _unitOfWork = unitOfWork;
         }
         public Result Add(SportCreateDto sportDto)
@@ -30,7 +27,7 @@ namespace TP1Gnasso.Service.Services
             var sport = SportMapper.ToEntity(sportDto);
             var result = _validator.Validate(sport);
 
-            if(!result.IsValid)
+            if (!result.IsValid)
             {
                 return Result.Failure(result.Errors.Select(e => e.ErrorMessage).ToList());
             }
@@ -57,11 +54,11 @@ namespace TP1Gnasso.Service.Services
         public Result Delete(int id)
         {
             var sport = _unitOfWork.Sports.GetById(id);
-            if(sport == null)
+            if (sport == null)
             {
                 return Result.Failure("Sport not found");
             }
-            if(_unitOfWork.Sports.HasShoes(id))
+            if (_unitOfWork.Sports.HasShoes(id))
             {
                 return Result.Failure("Cannot delete sport with associated shoes");
             }
@@ -141,7 +138,7 @@ namespace TP1Gnasso.Service.Services
         public Result<SportEditDto> GetForUpdate(int id)
         {
             Sport sport = (Sport)_unitOfWork.Sports.GetById(id);
-            if(sport == null)
+            if (sport == null)
             {
                 return Result<SportEditDto>.Failure("Sport not found");
             }
@@ -179,13 +176,13 @@ namespace TP1Gnasso.Service.Services
             var sportToValidate = SportMapper.ToEntity(sportDto);
             var result = _validator.Validate(sportToValidate);
 
-            if(!result.IsValid)
+            if (!result.IsValid)
             {
                 return Result.Failure(result.Errors.Select(e => e.ErrorMessage).ToList());
             }
 
             Sport sport = (Sport)_unitOfWork.Sports.GetById(sportDto.SportId);
-            if(sport == null)
+            if (sport == null)
             {
                 return Result.Failure("Sport not found");
             }
@@ -193,7 +190,7 @@ namespace TP1Gnasso.Service.Services
             sport.Name = sportDto.Name;
             sport.Active = sportDto.Active;
 
-            if(_unitOfWork.Sports.Exists(sport.Name!, sport.SportId))
+            if (_unitOfWork.Sports.Exists(sport.Name!, sport.SportId))
             {
                 return Result.Failure("Sport already exists!");
             }

@@ -10,7 +10,7 @@ using TP1Gnasso.Entities;
 namespace TP1Gnasso.Data.Repositories
 {
 
-    public class SizeRepository : GenericRepository<Size> ,ISizeRepository
+    public class SizeRepository : ConcurrencyRepository<Size> ,ISizeRepository
     {
         private readonly SportShoesDbContext _context;
         public SizeRepository(SportShoesDbContext context): base(context)

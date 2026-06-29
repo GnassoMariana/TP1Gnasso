@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using TP1Gnasso.Data;
 using TP1Gnasso.Entities;
 using TP1Gnasso.Service.Common;
 using TP1Gnasso.Service.DTOs.Size;
+using TP1Gnasso.Service.DTOs.Sport;
 using TP1Gnasso.Service.Interfaces;
 using TP1Gnasso.Service.Mappers;
 
@@ -78,6 +80,48 @@ namespace TP1Gnasso.Service.Services
 
         }
 
+        public Result Delete(SizeDeleteDto sizeDeleteDto)
+        {
+            try
+            {
+                _unitOfWork.Sizes.Delete(sizeDeleteDto.SizeId, sizeDeleteDto.RowVersion);
+                _unitOfWork.Save();
+                return Result.Success();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                _unitOfWork.RollBack();
+                return Result.ConcurrencyConflict("Another user has already modified the record");
+            }
+            catch (KeyNotFoundException)
+            {
+                _unitOfWork.RollBack();
+                return Result.ConcurrencyConflict("Size not found");
+            }
+            catch (Exception ex)
+            {
+                _unitOfWork.RollBack();
+                return Result.Failure(ex.Message);
+            }
+        }
+
+        public Result<List<SizeListDto>> FilterByActive(bool activo)
+        {
+            try
+            {
+                var query = _unitOfWork.Sizes.Query();
+                var list = query.Where(s => s.Active == activo);
+                var dtoList = list.Select(s => SizeMapper.ToSizeListDto(s)).ToList();
+                return Result<List<SizeListDto>>.Success(dtoList);
+
+            }
+            catch (Exception ex)
+            {
+
+                return Result<List<SizeListDto>>.Failure(ex.Message);
+            }
+        }
+
         public Result<List<SizeListDto>> GetAll()
         {
             var sizes = _unitOfWork.Sizes.GetAll()
@@ -105,6 +149,32 @@ namespace TP1Gnasso.Service.Services
                 return Result<SizeEditDto>.Failure("Size not found");
             }
             return Result<SizeEditDto>.Success(SizeMapper.ToSizeEditDto(size));
+        }
+
+        public Result<SizeListDto> GetSizeByNumber(decimal number)
+        {
+            var size = _unitOfWork.Sizes
+                       .GetAll()
+                       .FirstOrDefault(s => s.Number == number);
+
+            if (size == null)
+            {
+                return Result<SizeListDto>.Failure("Size not found");
+            }
+
+            return Result<SizeListDto>
+                .Success(SizeMapper.ToSizeListDto(size));
+        }
+
+        public Result<SizeDeleteDto> GetToDelete(int id)
+        {
+            var size = _unitOfWork.Sizes.GetById(id);
+            if (size != null)
+            {
+                var sizeToDelete = SizeMapper.ToDeleteDto(size);
+                return Result<SizeDeleteDto>.Success(sizeToDelete);
+            }
+            return Result<SizeDeleteDto>.Failure("Size not found");
         }
 
         //public Result HasSizes(int id)
